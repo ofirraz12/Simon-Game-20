@@ -17,17 +17,21 @@ $(".btn").click(function() {
     if (gamePattern.length > 0) {
         let userChosenColour = this.id; 
         userPattern.push(userChosenColour); 
-        playSound(userChosenColour);
         
+        // Play sound for the button pressed
+        playSound(userChosenColour);
+
+        // Animate button pressed
         $(this).addClass("pressed");
         setTimeout(() => {
             $(this).removeClass("pressed");
-        }, 200);
+        }, 50);
 
         checkPress(userPattern.length - 1);
     }
 });
 
+// Restart game on click in lose state
 $(".lose-state").click(function() {
     resetGame();
 });
@@ -49,7 +53,7 @@ function showPattern() {
             setTimeout(function() {
                 $("#" + gamePattern[i]).fadeOut(100).fadeIn(100);
                 playSound(gamePattern[i]);
-            }, i * 1000);
+            }, i * 500);
         })(i);
     }
 }
@@ -73,7 +77,9 @@ function checkPress(currentIndex) {
 }
 
 function playSound(name) {
-    sounds[name].play().catch(error => {
+    // Create a new Audio instance each time to play the sound immediately
+    let audio = new Audio("sounds/" + name + ".mp3");
+    audio.play().catch(error => {
         console.error("Error playing sound:", error);
     });
 }
